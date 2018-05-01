@@ -1,0 +1,59 @@
+.data
+a: .word 4
+b: .word 4
+c: .word 4
+
+.text
+
+
+main:
+	addi t0, x0, 5 # i = 5
+	addi t1, x0, 10 # j = 10 
+	
+	addi sp, sp , -8 # adjust stack pointer for i and j
+	sw t0, 0(sp) # store t0 in stack
+	sw t1, 4(sp) # store t1 in stack
+	
+	mv a0, t0 # move t0 to a0
+	jal AddItUp
+	
+	sw t1, a, t6 # store AddItUp(i) into a
+	
+	lw t0, 0(sp) # restore t0 from stack
+	lw t1, 4(sp) # restore t1 from stack
+	addi sp, sp , 8 # move back stack pointer
+	
+	addi sp, sp , -8 # adjust stack pointer for i and j
+	sw t0, 0(sp) # store t0 in stack
+	sw t1, 4(sp) # store t1 in stack
+	
+	mv a0, t1 # move t0 to a0
+	jal AddItUp
+	
+	sw t1, b, t6 # store AddItUp(j) into b 
+	
+	la t3, a # load back in address of a
+	lw t0, 0(t3) # load value of a to t0 for arithmetic 
+	add t2, t0, t1 # C = a + b
+	sw t2, c, t6 # store t2 into c
+	
+	j exit
+	
+	AddItUp: 
+		
+		add t1, x0, x0 # x = 0
+		addi t0, x0, 0 # i = 0
+		loop: slt a4, t0, a0 # a0 > i
+			beq a4, x0, end
+			addi t0, t0, 1 # i + 1
+			add t1, t1, t0 # x + i + 1			
+			j loop
+			
+		end: 
+			ret
+			
+	exit:
+		lw t0, 0(sp) # restore t0 from stack
+		lw t1, 4(sp) # restore t1 from stack
+		addi sp, sp , 8 # move back stack pointer
+		

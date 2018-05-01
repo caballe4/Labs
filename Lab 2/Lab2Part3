@@ -1,0 +1,35 @@
+.data 
+varZ: .word 4
+varI: .word 4
+
+.text
+
+main:
+	addi a0, x0, 2 # Z = 2
+	addi a1, x0, 0 # i = 0 
+	
+	while: slti a3, a1, 21 # loop condition
+		beq a3, x0, break # break condition
+		addi a0, a0, 1 # Z++
+		addi a1, a1, 2 # i = i+2
+		j while # jump to while
+	
+	break: 
+
+	while1: slti a3, a0, 100 # loop condition
+		beq a3, x0, break1 # break condition
+		addi a0, a0, 1 # Z = Z + 1 
+		j while1 # jump to while1
+	
+	break1: 
+	
+	while2: slt a3, x0, a1 # while i > 0
+		beq a3, x0, end # break condition
+		addi a0 , a0, -1 # Z = Z -1
+		addi a1, a1, -1 # i = i -1
+		j while2 # jump to while2
+	
+	 end: 
+	 	sw a0, varZ, t6 # store varZ
+	 	sw a1, varI, t6 # stroe varI 
+		
