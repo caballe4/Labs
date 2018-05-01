@@ -110,10 +110,10 @@ architecture biggermem of register32 is
 	end component;
 begin
 	-- insert code here.
-	D1 : register8 port map (datain(7 downto 0), enout32, writein32, dataout(7 downto 0));
-	D2 : register8 port map (datain(15 downto 8), enout32, writein32, dataout(15 downto 8));
-	D3 : register8 port map (datain(23 downto 16), enout32, writein32, dataout(23 downto 16));
-	D4 : register8 port map (datain(31 downto 24), enout32, writein32, dataout(31 downto 24));
+	D1 : register8 port map (datain(7 downto 0), enout8, writein8, dataout(7 downto 0));
+	D2 : register8 port map (datain(15 downto 8), enout8, writein8, dataout(15 downto 8));
+	D3 : register8 port map (datain(23 downto 16), enout8, writein8, dataout(23 downto 16));
+	D4 : register8 port map (datain(31 downto 24), enout8, writein8, dataout(31 downto 24));
 end architecture biggermem;
 
 --------------------------------------------------------------------------------
