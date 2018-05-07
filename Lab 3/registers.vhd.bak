@@ -165,7 +165,7 @@ begin
 	co <= cout(32);
 
 	calculate: for i in 0 to 31 generate
-	total: fulladder port map(datain_a(i), data(i), cout(i), dataout(i), c(i+1));
+	total: fulladder port map(datain_a(i), data(i), cout(i), dataout(i), cout(i+1));
 	end generate; 	
 end architecture calc;
 
@@ -186,6 +186,15 @@ architecture shifter of shift_register is
 	
 begin
 	-- insert code here.
+
+	with dir & shamt select
+		dataout <= datain(30 downto 0) & '0' when "000001",
+				datain(29 downto 0) & "00" when "000010",
+				datain(28 downto 0) & "000" when "000011",
+				'0' & datain(31 downto 1) when "100001",
+				"00" & datain(31 downto 2) when "100010",
+				"000" & datain(31 downto 3) when "100011",
+				datain(31 downto 0) when others;
 end architecture shifter;
 
 

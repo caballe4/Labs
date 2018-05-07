@@ -116,10 +116,10 @@ begin
 	-- insert code here.
 
 	enout1 <= enout32 and enout16 and enout8;
-	writein1 <= writein32 and writein16 and writein8;
+	writein1 <= writein32 or writein16 or writein8;
 	
 	enout2 <= enout32 and enout16;
-	writein2 <= writein32 and writein16;
+	writein2 <= writein32 or writein16;
 		
 	D1 : register8 port map (datain(7 downto 0), enout1, writein1, dataout(7 downto 0));
 	D2 : register8 port map (datain(15 downto 8), enout2, writein2, dataout(15 downto 8));
@@ -186,6 +186,15 @@ architecture shifter of shift_register is
 	
 begin
 	-- insert code here.
+
+	with dir & shamt select
+		dataout <= datain(30 downto 0) & '0' when "000001",
+				datain(29 downto 0) & "00" when "000010",
+				datain(28 downto 0) & "000" when "000011",
+				'0' & datain(31 downto 1) when "100001",
+				"00" & datain(31 downto 2) when "100010",
+				"000" & datain(31 downto 3) when "100011",
+				datain(31 downto 0) when others;
 end architecture shifter;
 
 
