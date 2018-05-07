@@ -108,10 +108,21 @@ architecture biggermem of register32 is
 			enout: in std_logic;
 			dataout: out std_logic_vector (7 downto 0));
 	end component;
+	signal enout1: std_logic;
+	signal enout2: std_logic;
+	signal writein1: std_logic;
+	signal writein2: std_logic;
 begin
 	-- insert code here.
-	D1 : register8 port map (datain(7 downto 0), enout32, writein32, dataout(7 downto 0));
-	D2 : register8 port map (datain(15 downto 8), enout32, writein32, dataout(15 downto 8));
+
+	enout1 <= enout32 and enout16 and enout8;
+	writein1 <= writein32 and writein16 and writein8;
+	
+	enout2 <= enout32 and enout16;
+	writein2 <= writein32 and writein16;
+		
+	D1 : register8 port map (datain(7 downto 0), enout1, writein1, dataout(7 downto 0));
+	D2 : register8 port map (datain(15 downto 8), enout2, writein2, dataout(15 downto 8));
 	D3 : register8 port map (datain(23 downto 16), enout32, writein32, dataout(23 downto 16));
 	D4 : register8 port map (datain(31 downto 24), enout32, writein32, dataout(31 downto 24));
 end architecture biggermem;
@@ -131,9 +142,31 @@ entity adder_subtracter is
 end entity adder_subtracter;
 
 architecture calc of adder_subtracter is
+	component fulladder is
+   	 port (a : in std_logic;
+         	 b : in std_logic;
+         	 cin : in std_logic;
+         	 sum : out std_logic;
+         	 carry : out std_logic
+         	);
+	end component;
+
+	signal data: std_logic_vector(31 downto 0);	
+	signal cout: std_logic_vector(32 downto 0);
 
 begin
 	-- insert code here.
+
+	with add_sub select
+		data <= datain_b when '0',	--addition
+		not(datain_b) when others;	--subtraction
+
+	cout(0) <= add_sub;
+	co <= cout(32);
+
+	calculate: for i in 0 to 31 generate
+	total: fulladder port map(datain_a(i), data(i), cout(i), dataout(i), cout(i+1));
+	end generate; 	
 end architecture calc;
 
 --------------------------------------------------------------------------------
