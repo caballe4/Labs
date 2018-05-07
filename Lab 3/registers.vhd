@@ -47,7 +47,7 @@ end fulladder;
 
 architecture addlike of fulladder is
 begin
-  sum   <= a xor b xor cin; 
+  sum   <= (a xor b) xor cin; 
   carry <= (a and b) or (a and cin) or (b and cin); 
 end architecture addlike;
 
@@ -75,16 +75,10 @@ architecture memmy of register8 is
 begin
 	
 -- use bitcomponent ports to store the data
-
-	D0 : bitstorage port map (datain(0), enout, writein, dataout(0));
-	D1 : bitstorage port map (datain(1), enout, writein, dataout(1));
-	D2 : bitstorage port map (datain(2), enout, writein, dataout(2));
-	D3 : bitstorage port map (datain(3), enout, writein, dataout(3));
-	D4 : bitstorage port map (datain(4), enout, writein, dataout(4));
-	D5 : bitstorage port map (datain(5), enout, writein, dataout(5));
-	D6 : bitstorage port map (datain(6), enout, writein, dataout(6));
-	D7 : bitstorage port map (datain(7), enout, writein, dataout(7));
-
+	
+	register8: for i in 0 to 7 generate 
+		bi: bitstorage PORT MAP(datain(i), enout, writein, dataout(i));
+	end generate;
 end architecture memmy;
 --------------------------------------------------------------------------------
 Library ieee;
@@ -100,32 +94,31 @@ entity register32 is
 end entity register32;
 
 architecture biggermem of register32 is
-	-- hint: you'll want to put register8 as a component here 
-	-- so you can use it below
 	component register8
-		port(datain: in std_logic_vector (7 downto 0);
-			writein: in std_logic;
-			enout: in std_logic;
-			dataout: out std_logic_vector (7 downto 0));
+		port(datain: in std_logic_vector(7 downto 0);
+		     enout:  in std_logic;
+		     writein: in std_logic;
+		     dataout: out std_logic_vector(7 downto 0));
 	end component;
-	signal enout1: std_logic;
-	signal enout2: std_logic;
-	signal writein1: std_logic;
-	signal writein2: std_logic;
+
+	signal signalA, signalB, writeA, writeB: std_logic;
 begin
 	-- insert code here.
-
-	enout1 <= enout32 and enout16 and enout8;
-	writein1 <= writein32 or writein16 or writein8;
 	
-	enout2 <= enout32 and enout16;
-	writein2 <= writein32 or writein16;
-		
-	D1 : register8 port map (datain(7 downto 0), enout1, writein1, dataout(7 downto 0));
-	D2 : register8 port map (datain(15 downto 8), enout2, writein2, dataout(15 downto 8));
-	D3 : register8 port map (datain(23 downto 16), enout32, writein32, dataout(23 downto 16));
-	D4 : register8 port map (datain(31 downto 24), enout32, writein32, dataout(31 downto 24));
+	signalA <= enout32 and enout16 and enout8;
+	writeA <= writein32 or writein16 or writein8;
+
+	signalB <= enout32 and enout16;
+	writeB <= writein32 or writein16;
+
+
+	register0: register8 port map (datain(7 downto 0), signalA, writeA, dataout(7 downto 0));
+	register1: register8 port map (datain(15 downto 8), signalB, writeB, dataout(15 downto 8));
+	register2: register8 port map (datain(23 downto 16), enout32, writein32, dataout(23 downto 16));
+	register3: register8 port map (datain(31 downto 24), enout32, writein32, dataout(31 downto 24));
+
 end architecture biggermem;
+
 
 --------------------------------------------------------------------------------
 Library ieee;
