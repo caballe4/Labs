@@ -59,8 +59,13 @@ begin
 	'1' when '1',
 	'Z' when others; 
 	
+<<<<<<< HEAD
 	A: adder_subtracter port map(DataIn1(31 downto 0), data2(31 downto 0), add_sub, adder(31 downto 0), co);
 	andi <= DataIn1 and DataIn2;
+=======
+	A: adder_subtracter port map(DataIn1, data, add_sub, adder, co);
+	andi <= DataIn1 and DataIn2; 
+>>>>>>> 4bd5b2c15e7969a4a0421d4cc64bd9f7c77a3f55
 	ori <= DataIn1 or DataIn2;
 	SL: shift_register port map (DataIn1, '0', DataIn2(4 downto 0), slli); 
 	SR: shift_register port map (DataIn1, '1', DataIn2(4 downto 0), slri);
