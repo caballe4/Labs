@@ -53,17 +53,14 @@ architecture ALU_Arch of ALU is
 begin
 	
 	data2 <= DataIn2;
-
-	with add_sub select
-		data <= DataIn2 when '0',	--addition
-		not(DataIn2) when others;	--subtraction
-
-	cout(0) <= add_sub;
-	co <= cout(32);
 	
+	with ALUCtrl(0) select add_sub <=
+	'0' when '0',
+	'1' when '1',
+	'Z' when others; 
 	
-	A: adder_subtracter port map(DataIn1, DataIn2, add_sub, adder, co);
-	andi <= DataIn1 and DataIn2; 
+	A: adder_subtracter port map(DataIn1(31 downto 0), data2(31 downto 0), add_sub, adder(31 downto 0), co);
+	andi <= DataIn1 and DataIn2;
 	ori <= DataIn1 or DataIn2;
 	SL: shift_register port map (DataIn1, '0', DataIn2(4 downto 0), slli); 
 	SR: shift_register port map (DataIn1, '1', DataIn2(4 downto 0), slri);
