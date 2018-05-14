@@ -77,7 +77,7 @@ BEGIN
 
 		-- test the data2 hardline
 		wait for 100 ns;
-		control <= "10000";	-- result: 0x00110001
+		control <= "10010";	-- result: 0x00110001
 					
 		wait; -- will wait forever
 	END PROCESS;

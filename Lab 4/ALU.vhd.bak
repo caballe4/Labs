@@ -36,7 +36,7 @@ architecture ALU_Arch of ALU is
 	end component shift_register;
 
 	signal data: std_logic_vector(31 downto 0);
-	signal data2: std_logic_vector(31 downto 0);
+	signal data2: std_logiv_vector(31 downto 0);
 	signal cout: std_logic_vector(32 downto 0);
 	signal co: std_logic;
 	signal add_sub: std_logic;

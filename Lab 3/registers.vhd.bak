@@ -108,7 +108,7 @@ begin
 	signalA <= enout32 and enout16 and enout8;
 	writeA <= writein32 or writein16 or writein8;
 
-	singalB <= enout32 and enout16;
+	signalB <= enout32 and enout16;
 	writeB <= writein32 or writein16;
 
 
