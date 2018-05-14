@@ -62,7 +62,7 @@ begin
 	co <= cout(32);
 	
 	
-	A: adder_subtracter port map(DataIn1, DataIn2, add_sub, adder, co);
+	A: adder_subtracter port map(DataIn1, data, add_sub, adder, co);
 	andi <= DataIn1 and DataIn2; 
 	ori <= DataIn1 or DataIn2;
 	SL: shift_register port map (DataIn1, '0', DataIn2(4 downto 0), slli); 
