@@ -1,0 +1,68 @@
+#Part 2 Branches
+
+.data
+varA: .word 4
+varB: .word 4
+varC: .word 4
+varZ: .word 4
+
+.text
+
+main:
+
+	addi a0, zero, 10
+	addi a1, zero, 15
+	addi a2, zero, 6
+	addi a3, zero, 0
+	
+	blt a0, a1, L # if A < B
+	blt a1, a0, M # if A > B
+	addi t0, a2, 1 # C + 1
+	addi t1, x0, 7 # store 7
+	beq t0, t1, M # || (C + 1) == 7
+	j EXIT
+	
+	L:
+		addi t1, x0, 6 # store 6
+		bge a2, t1, K # && C > 5
+	
+	K: 
+		addi a3, x0, 1 # Z = 1
+		j SWITCH
+	
+	M: 
+		addi a3, x0, 2 # Z = 2
+		j SWITCH
+	
+	EXIT:
+		addi a3, x0, 3 # else Z = 3
+		
+	SWITCH:
+		addi t1, x0, 1 # 0	
+		beq a3, t1, ONE # case 1
+		addi t1, t1, 1 # 1
+		beq a3, t1, TWO # case 2
+		addi t1, t1, 1 # 2
+		beq a3, t1, THREE # case 3
+		j DEFAULT
+	
+	ONE:
+		addi a3, x0, -1 # Z = -1
+		j END
+	
+	TWO:
+		addi a3, x0, -2	# Z = -2
+		j END
+	THREE: 
+		addi a3, x0, -3 # Z = -3
+		j END
+		
+	DEFAULT: 
+		addi a3, x0, 0 # Z = 0
+	
+	END:
+		sw a0, varA, t0
+		sw a1, varB, t0
+		sw a2, varC, t0
+		sw a3, varZ, t0
+	 

@@ -1,0 +1,45 @@
+.data
+a: .space 20
+b: .word 1, 2, 4, 8, 16
+i: .word 4
+
+.text
+
+main:
+	la a0, a # load address of a
+	la a1, b # laod address of b
+
+	addi a2, x0, 0 # i = 0
+	while: slti t0, a2, 5
+		beq t0, x0, break
+		slli t1, a2, 2 # shift i by 2 bits
+		add t2, a1, t1  # add i to adress a
+		lw t3, 0(t2) # load b[i]
+		addi t3, t3, -1 # subtract one
+		add t4, t1, a0 # find address of A[i]
+		sw t3, 0(t4) # store into a
+		addi a2, a2, 1 # i = i +1
+		j while
+		
+		  
+	break:
+		addi a2, a2, -1 # i --
+		addi s3, x0, -1 #load register with -1
+	while2: slt t0, s3, a2 #loop condition
+		beq t0, x0, break2 #break condition
+		slli t1, a2, 2 #shift i by 2 bits
+		add t2, a0, t1 #add i to address of a
+		lw t3, 0(t2) #load a[i]
+		add t4, a1, t1 #add i to address of b
+		lw t5, 0(t4) #load b[i]
+		add t6, t5, t3 # a[i] + b[i]
+		addi s2, x0, 2 #load register with 2
+		mul t6, t6, s2 # (a[i] + b[i]) * 2
+		sw t6, 0(t2) # store value in a[i]
+		addi a2, a2, -1 # i--
+		j while2
+	break2:
+	
+	
+	
+	
